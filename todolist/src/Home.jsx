@@ -12,8 +12,8 @@ function Home(){
     }, []);
 
     //edit function
-    const handleEdit = (id) => {
-        axios.put("http://localhost:3001/update/" + id)
+    const handleEdit = (id, updated_status) => {
+        axios.put("http://localhost:3001/update/" + id, {status: updated_status})
             .then(result => location.reload())
             .catch(error => console.log(error))
     }
@@ -33,15 +33,21 @@ function Home(){
                     ?
                     <div><h2>No Tasks</h2></div>
                     :
-                todos.map((todo) => (
+                    todos.filter(todo => todo.status !== 5).map((todo) => (
                     <div className="task" key={todo._id}>
-                        <div className="checkBox" onClick={()=> handleEdit(todo._id)}>
-                            {todo.status === 4
-                                ? <BsCheck2Square className="icon" ></BsCheck2Square>
-                                :<BsSquare className="icon" /> }
+                        <div className="dropDown">
+                        <select
+                            value={todo.status}
+                            onChange={(e) => handleEdit(todo._id, Number(e.target.value))}
+                            className="statusDropDown">
+                            <option value={1}>Draft</option>
+                            <option value={2}>In Progress</option>
+                            <option value={3}>On Hold</option>
+                            <option value={4}>Completed</option>
+                        </select>
                             <p className={todo.status === 4 ? "line_through" : ""}>{todo.task}</p>
-                        </div>
-                        <div>
+                    </div>
+                <div>
                             <span><BsX className="icon" onClick={() => handleDelete(todo._id)}/></span>
                         </div>
                     </div>

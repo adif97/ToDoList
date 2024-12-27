@@ -26,14 +26,15 @@ app.post('/add', (req, res) => {
 
 app.put('/update/:id', (req, res) => {
     const {id} = req.params;
-    todoModel.findByIdAndUpdate({_id: id},{status: 4})
+    const {status} = req.body;
+    todoModel.findByIdAndUpdate({_id: id},{status}, {new:true})
         .then(result => res.json(result))
         .catch(error => res.json(error))
 })
-
+//change to deleted (status = 5) but keep the record in the DB
 app.delete('/delete/:id', (req, res) => {
     const {id} = req.params;
-    todoModel.findByIdAndDelete({_id: id},{status: 4})
+    todoModel.findByIdAndUpdate({_id: id},{status: 5} ,{new:true})
         .then(result => res.json(result))
         .catch(error => res.json(error))
 })
