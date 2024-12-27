@@ -15,3 +15,36 @@
     color: white;
     cursor: pointer;
 }
+
+.task {
+    display: flex;
+    align-items: center;
+    width: 345px;
+    justify-content: space-between;
+    background-color: cornflowerblue;
+    color: black;
+    height: 35px;
+    padding: 2px 5px 2px 5px;
+    margin-top: 2px;
+}
+
+.checkBox {
+    display: flex;
+    align-items: center;
+}
+.checkBox .icon {
+    margin-right: 5px;
+    font-size: 15px;
+}
+
+.line_through {
+    text-decoration: line-through;
+}
+
+.task div span {
+    margin: 0px 5px 0px 4px;
+}
+
+.task div .icon {
+    cursor: pointer;
+}
