@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import Create from "./Create.jsx";
 import axios from "axios";
-import {BsCheck2Square, BsSquare, BsSquareFill, BsX} from "react-icons/bs";
+import {BsCheck2Square, BsPencil, BsSquare, BsSquareFill, BsX} from "react-icons/bs";
 
 function Home(){
     const [todos, setTodos] = React.useState([]);
@@ -11,19 +11,20 @@ function Home(){
             .catch(error => console.log(error))
     }, []);
 
-    //edit function
-    const handleEdit = (id, updated_status) => {
-        axios.put("http://localhost:3001/update/" + id, {status: updated_status})
+    //edit status
+    const handleEditStatus = (id, updated_status) => {
+        axios.put("http://localhost:3001/updatestatus/" + id, {status: updated_status})
             .then(result => location.reload())
             .catch(error => console.log(error))
     }
 
-    //delete function
+    //delete task
     const handleDelete = (id) => {
         axios.delete("http://localhost:3001/delete/" + id)
             .then(result => location.reload())
             .catch(error => console.log(error))
     }
+
     return(
         <div className="home">
             <h2>ToDo List</h2>
@@ -38,7 +39,7 @@ function Home(){
                         <div className="dropDown">
                         <select
                             value={todo.status}
-                            onChange={(e) => handleEdit(todo._id, Number(e.target.value))}
+                            onChange={(e) => handleEditStatus(todo._id, Number(e.target.value))}
                             className="statusDropDown">
                             <option value={1}>Draft</option>
                             <option value={2}>In Progress</option>
@@ -47,9 +48,9 @@ function Home(){
                         </select>
                             <p className={todo.status === 4 ? "line_through" : ""}>{todo.task}</p>
                     </div>
-                <div>
+                        <div>
                             <span><BsX className="icon" onClick={() => handleDelete(todo._id)}/></span>
-                        </div>
+                    </div>
                     </div>
             ))}
         </div>
