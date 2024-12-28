@@ -22,8 +22,14 @@ app.get("/get", (req, res) => {
 app.post('/add', (req, res) => {
     const {task} = req.body;
     const {description} = req.body;
+    const {create_time} = req.body;
+    const {update_time} = req.body;
+    const {due_time} = req.body;
+    const {priority} = req.body
+    const {status} = req.body
+
     todoModel.create(
-        {task: task, description: description})
+        {task: task, description: description, create_time: create_time, update_time: update_time, due_time: due_time, priority: priority, status: status})
         .then(result => res.json(result))
         .catch(error => res.json(error))
 })

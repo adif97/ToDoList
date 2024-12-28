@@ -2,30 +2,16 @@ const mongoose = require('mongoose')
 const todoSchema = new mongoose.Schema({
     task: String,
     description: String,
-    edit_mode: {
-        type: Boolean,
-        default: false
-    },
-    create_time: {
-        type: Date,
-        default: Date.now()
-    },
-    update_time: {
-        type: Date,
-        default: Date.now()
-    },
-    due_time: {
-        type: Date,
-        default: null
-    },
+    create_time: Date,
+
+    update_time: Date,
+    due_time: Date,
     assigned_user_id: {
         type: Number,
         default: 1
     },
     priority: Number,
-    status: {
-        type:Number,
-        default:1}
+    status: Number
 })
 const todoModel = mongoose.model("todos", todoSchema)
 module.exports = todoModel
