@@ -1,19 +1,17 @@
 import React from 'react'
-import axios from 'axios'
-import DatePicker from "react-datepicker";
+import {handleAdd} from "./httpUtil.jsx";
 
 function Create(){
-    const [task, setTask] = React.useState([])
-    const [description, setDescription] = React.useState('')
+    const [task, setTask] = React.useState("")
+    const [description, setDescription] = React.useState("")
+    const addTask = () => {
+        handleAdd({ task:task, description:description })
+            .then(() => {
+                location.reload(); // Reload to reflect the new task
+            })
+            .catch((error) => console.log(error));
+    };
 
-    const handleAdd = () => {
-        axios.post('http://localhost:3001/add',
-            {task:task,
-                description:description
-               })
-            .then(result => location.reload())
-            .catch(error => console.log(error))
-    }
     return(
         <div className="create_form">
             <input type="text"
@@ -25,7 +23,7 @@ function Create(){
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
             ></textarea>
-            <button type="button" onClick={handleAdd}>Add</button>
+            <button type="button" onClick={addTask}>Add</button>
         </div>
     )
 }

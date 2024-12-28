@@ -11,6 +11,7 @@ app.use(express.json())
 //connection to the DataBase
 mongoose.connect('mongodb://127.0.0.1:27017/DB')
 
+//get a task from DB
 app.get("/get", (req, res) => {
     todoModel.find()
         .then(result => res.json(result))
@@ -27,44 +28,20 @@ app.post('/add', (req, res) => {
         .catch(error => res.json(error))
 })
 
-//change the task status
-app.put('/updatestatus/:id', (req, res) => {
-    const {id} = req.params;
-    const {status} = req.body;
-    todoModel.findByIdAndUpdate({_id: id},{status, update_time: Date.now()}, {new:true})
-        .then(result => res.json(result))
-        .catch(error => res.json(error))
-})
+//update task on DB
+app.put('/update/:id', (req, res) => {
+    const { id } = req.params;
+    const updatedFields = req.body;
 
-//change the task priority
-app.put('/updatepriority/:id', (req, res) => {
-    const {id} = req.params;
-    const {priority} = req.body;
-    todoModel.findByIdAndUpdate({_id: id},{priority, update_time: Date.now()}, {new:true})
-        .then(result => res.json(result))
-        .catch(error => res.json(error))
-})
+    // Ensure that the `update_time` is added automatically
+    updatedFields.update_time = Date.now();
 
-//toggle edit mode
-app.put('/updatemode/:id', (req, res) => {
-    const {id} = req.params;
-    const {edit_mode} = req.body;
-    todoModel.findByIdAndUpdate({_id: id},{edit_mode, update_time: Date.now()}, {new:true})
+    todoModel.findByIdAndUpdate({ _id: id }, updatedFields, { new: true })
         .then(result => res.json(result))
-        .catch(error => res.json(error))
-})
-
-//edit task description
-app.put('/updatedesc/:id', (req, res) => {
-    const {id} = req.params;
-    const {description} = req.body;
-    todoModel.findByIdAndUpdate({_id: id},{description, edit_mode:false, update_time: Date.now()}, {new:true})
-        .then(result => res.json(result))
-        .catch(error => res.json(error))
-})
-
+        .catch(error => res.status(500).json({ error: error.message }));
+});
 //change to deleted (status = 5) but keep the record in the DB
-app.delete('/deletetask/:id', (req, res) => {
+app.delete('/delete/:id', (req, res) => {
     const {id} = req.params;
     todoModel.findByIdAndUpdate({_id: id},{status: 5, update_time: Date.now()},{new:true})
         .then(result => res.json(result))

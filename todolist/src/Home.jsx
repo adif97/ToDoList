@@ -2,64 +2,15 @@ import React, {useEffect} from 'react'
 import Create from "./Create.jsx";
 import axios from "axios";
 import {BsCheck, BsPencil, BsX} from "react-icons/bs";
+import {getTasks, handleUpdateTask, handleDeleteTask} from "./httpUtil.jsx";
 
 function Home(){
     const [todos, setTodos] = React.useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3001/get")
-            .then(result => setTodos(result.data))
-            .catch(error => console.log(error))
-    }, []);
-
-    //edit status
-    const handleEditStatus = (id, updated_status) => {
-        axios.put("http://localhost:3001/updatestatus/" + id, {status: updated_status})
-            .then(result => {
-                console.log(result);
-                location.reload();
-            })
-            .catch(error => console.log(error))
-    }
-
-    //edit priority
-    const handleEditPriority = (id, updated_priority) => {
-        axios.put("http://localhost:3001/updatepriority/" + id, {priority: updated_priority})
-            .then(result => {
-                console.log(result);
-                location.reload();
-            })
-            .catch(error => console.log(error))
-    }
-
-    //toggle edit mode
-    const handleToggleEditDesc = (id, bool) => {
-        axios.put("http://localhost:3001/updatemode/" + id, {edit_mode: bool})
-            .then(result => {
-                console.log(result);
-                location.reload();
-            })
-            .catch(error => console.log(error))
-    }
-
-    //save new description
-    const handleSaveDesc = (id, newDesc) => {
-        axios.put("http://localhost:3001/updatedesc/" + id, { description: newDesc })
-            .then(result => {
-                console.log(result);
-                location.reload();
-            })
-            .catch(error => console.log(error))
-    }
-
-    //delete task (not from DB)
-    const handleDeleteTask = (id) => {
-        axios.delete("http://localhost:3001/deletetask/" + id)
-            .then(result => {
-                console.log(result);
-                location.reload();
-            })
-            .catch(error => console.log(error))
-    }
+        getTasks()
+            .then((tasks) => setTodos(tasks))
+            .catch((error) => console.error(error));
+    },[]);
 
     return(
         <div className="home">
@@ -79,7 +30,7 @@ function Home(){
 
                                 <select
                                     value={todo.status}
-                                    onChange={(e) => handleEditStatus(todo._id, Number(e.target.value))}
+                                    onChange={(e) =>  handleUpdateTask(todo._id, {status: Number(e.target.value)})}
                                     className="statusDropDown">
                                     <option value={1}>Draft</option>
                                     <option value={2}>In Progress</option>
@@ -89,7 +40,7 @@ function Home(){
 
                                 <select
                                     value={todo.priority}
-                                    onChange={(e) => handleEditPriority(todo._id, Number(e.target.value))}
+                                    onChange={(e) => handleUpdateTask(todo._id, {priority:(e.target.value)})}
                                     className="priorityDropDown">
                                     <option value="">-- Select Priority --</option>
                                     <option value={1}>Low</option>
@@ -109,8 +60,8 @@ function Home(){
                                         defaultValue={todo.description}
                                         onChange={(e) => (todo.newDescription = e.target.value)}
                                     />
-                                        <BsCheck onClick={() => handleSaveDesc(todo._id, todo.newDescription)}/>
-                                        <BsX className="icon" onClick={() => handleToggleEditDesc(todo._id, false)}/>
+                                        <BsCheck onClick={() =>  handleUpdateTask(todo._id, {description: todo.newDescription})}/>
+                                        <BsX className="icon" onClick={() =>  handleUpdateTask(todo._id, {edit_mode:false})}/>
                                     </>
                                 ) : (
                                     <>
@@ -121,7 +72,7 @@ function Home(){
 
                             <BsPencil
                                 className="icon"
-                                onClick={() => handleToggleEditDesc(todo._id, true)}
+                                onClick={() => handleUpdateTask(todo._id, {edit_mode:true})}
                             />
                             <BsX className="icon" onClick={() => handleDeleteTask(todo._id)}/>
 
