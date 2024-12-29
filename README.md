@@ -1,5 +1,44 @@
-In this project I built a simple ToDo List. The user can see the current tasks list, add, edit and delete tasks. All tasks stored in DB, including the deleted tasks.
+**To-Do List Project**  
+In this project, I built a simple To-Do List application.  
 
-How it works? client side: (React and use of bootstrap) Create - responsible for creation of new task Home - responsible for the exsiting tasks and the view httpUtil - includes the functions which connected to the server Server side: (Node.js, Express) Models > todo - contains the structure of a task in the DB index - responsible for the connection with the DB Database: MongoDB
+**Features:**  
+* Users can see the current task list.  
+* Add, edit, and delete tasks.  
+* All tasks are stored in a database, including deleted tasks.  
 
-Prerequisites: download and install node.js make sure npm is running > npm -v install MongoDB and make sure it runs locally download the files in the project folder > npm run for the client side: todolist > open the terminal > npm run dev > go to the interface you got for the server side: server > open the terminal > npm start
+**How It Works?**  
+***Client Side:***  
+Built with React and Bootstrap  
+* Create Component: Responsible for creating new tasks.
+* Home Component: Responsible for displaying existing tasks and managing the overall view.
+* httpUtil: Contains the functions to connect with the server.
+  
+***Server Side:***  
+Node.js and Express  
+* Models > todo: Defines the structure of a task in the database.
+* index.js: Handles the database connection and server logic.
+  
+***Database:***  
+MongoDB  
+All tasks are stored and retrieved from MongoDB.
+
+**Prerequisites:**  
+* Download and install node.js
+* Make sure npm is running > npm -v
+* Install MongoDB and make sure it runs locally
+* Download the files
+  
+***Running the Project:***
+Client Side:  
+* Navigate to the todolist folder.
+* Open a terminal and run:  
+npm install  
+npm run dev  
+* Open the URL provided in the terminal output to access the app.  
+Server Side:  
+* Navigate to the server folder.
+* Open a terminal and run:  
+npm install  
+npm start
+
+**If there is any missing module or library, install it using npm install**
